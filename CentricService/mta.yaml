@@ -1,0 +1,91 @@
+## Generated mta.yaml based on template version 0.4.0
+## appName = CentricService
+## language=nodejs; multitenant=false
+## approuter=
+_schema-version: '3.1'
+ID: CentricService
+version: 1.0.0
+description: "A simple CAP project."
+parameters:
+  enable-parallel-deployments: true
+   
+build-parameters:
+  before-all:
+   - builder: custom
+     commands:
+      - npm ci
+      - npx -p @sap/cds-dk cds build --production
+
+modules:
+ # --------------------- SERVER MODULE ------------------------
+ - name: CentricService-srv
+ # ------------------------------------------------------------
+   type: nodejs
+   path: gen/srv
+   parameters:
+     buildpack: nodejs_buildpack
+   build-parameters:
+     builder: npm-ci
+   requires:
+    # Resources extracted from CAP configuration
+    - name: uaa_CentricAppRouter
+    - name: CentricService-db
+    - name: dest-srv
+   provides:
+    - name: srv-api      # required by consumers of CAP services (e.g. approuter)
+      properties:
+        srv-url: ${default-url}
+
+ # -------------------- SIDECAR MODULE ------------------------
+ - name: CentricService-db-deployer
+ # ------------------------------------------------------------
+   type: hdb
+   path: gen/db  
+   parameters:
+     buildpack: nodejs_buildpack
+   requires:
+    # 'hana' and 'xsuaa' resources extracted from CAP configuration
+    - name: CentricService-db
+
+
+resources:
+ # services extracted from CAP configuration
+ # 'service-plan' can be configured via 'cds.requires.<name>.vcap.plan'
+# ------------------------------------------------------------
+
+ - name: uaa_CentricAppRouter
+   type: org.cloudfoundry.existing-service
+   parameters:
+     service-name: CentricAppRouter-xsuaa-service
+ - name: CentricService-db
+# ------------------------------------------------------------
+   type: com.sap.xs.hdi-container
+   parameters:
+     service: hana  # or 'hanatrial' on trial landscapes
+     service-plan: hdi-shared
+   properties:
+     hdi-service-name: ${service-name}
+ - name: dest-srv
+   requires:
+     - name: srv-api
+   parameters:
+     service-plan: lite
+     service-name: dest-srv
+     service: destination
+     config:
+      HTML5Runtime_enabled: true
+      init_data:
+        subaccount:
+          destinations:
+          - Name: centric_api
+            Description: onboarding backend
+            Authentication: NoAuthentication
+            ProxyType: Internet
+            Type: HTTP
+            URL: ~{srv-api/srv-url}
+            HTML5.DynamicDestination: true
+            HTML5.ForwardAuthToken: true
+          existing_destinations_policy: update
+      version: 1.0.0
+   type: org.cloudfoundry.managed-service
+

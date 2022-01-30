@@ -1,0 +1,23 @@
+{
+   "folders": [
+      {
+         "path": "themedesigner"
+      },
+      {
+         "path": "demoAP1"
+      },
+      {
+         "path": "demoAP2"
+      },
+      {
+         "path": "demoAP3"
+      },
+      {
+         "path": "CentricService"
+      },
+      {
+         "path": "CentricAppRouter"
+      }
+   ],
+   "settings": {}
+}

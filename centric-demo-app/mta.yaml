@@ -1,0 +1,45 @@
+_schema-version: "3.2"
+ID: com-centric-centricdemoapp
+description: Centric Demo app
+version: 0.0.1
+modules:
+- name: com-centric-centricdemoapp-app-content
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: com-centric-centricdemoapp-repo-host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - artifacts:
+      - comcentriccentricdemoapp.zip
+      name: comcentriccentricdemoapp
+      target-path: resources/
+- name: comcentriccentricdemoapp
+  type: html5
+  path: .
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+resources:
+- name: com-centric-centricdemoapp-repo-host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-name: com-centric-centricdemoapp-html5-srv
+    service-plan: app-host
+- name: dest-srv
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: destination
+    service-name: dest-srv
+    service-plan: lite
+parameters:
+  deploy_mode: html5-repo
+  enable-parallel-deployments: true
