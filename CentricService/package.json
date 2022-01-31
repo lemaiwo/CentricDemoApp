@@ -7,6 +7,7 @@
     "private": true,
     "dependencies": {
         "@sap/cds": "^5",
+        "@sap/cds-odata-v2-adapter-proxy": "^1.8.5",
         "@sap/xsenv": "^3.2.0",
         "@sap/xssec": "^3.2.12",
         "express": "^4",
@@ -50,22 +51,21 @@
                 "kind": "sql"
             },
             "auth": {
-              "kind": "basic-auth",
-              "users": {
-                "admin": {
-                  "roles": [
-                  ],
-                  "tenant": "anonymous"
+                "kind": "basic-auth",
+                "users": {
+                    "admin": {
+                        "roles": [],
+                        "tenant": "anonymous"
+                    }
                 }
-              }
             },
             "[production]": {
-              "auth": {
-                "kind": "jwt-auth"
-              },
-              "uaa": {
-                "kind": "xsuaa"
-              }
+                "auth": {
+                    "kind": "jwt-auth"
+                },
+                "uaa": {
+                    "kind": "xsuaa"
+                }
             }
         },
         "hana": {

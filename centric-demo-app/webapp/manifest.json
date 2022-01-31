@@ -34,6 +34,22 @@
         "sourceTemplate": {
             "id": "ui5template.fiorielements.v4.lrop",
             "version": "1.0.0"
+        },
+        "crossNavigation": {
+            "inbounds": {
+                "centricui": {
+                    "signature": {
+                        "parameters": {},
+                        "additionalParameters": "allowed"
+                    },
+                    "semanticObject": "Centric",
+                    "action": "ui",
+                    "title": "{{appTitle}}",
+                    "info": "{{appTitle}}",
+                    "subTitle": "{{appDescription}}",
+                    "icon": "sap-icon://account"
+                }
+            }
         }
     },  
     "sap.ui": {

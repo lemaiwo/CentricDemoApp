@@ -12,6 +12,8 @@ modules:
   parameters:
     disk-quota: 256M
     memory: 256M
+  properties:
+    SEND_XFRAMEOPTIONS: false
 - name: CentricAppRouter_ui_deployer
   type: com.sap.application.content
   path: .
