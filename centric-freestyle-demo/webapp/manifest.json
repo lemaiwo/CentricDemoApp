@@ -83,12 +83,12 @@
       },
       "routes": [
         {
-          "pattern": "",
+          "pattern": ":?query:",
           "name": "list",
           "target": "list"
         },
         {
-          "pattern": "Books/{objectId}",
+          "pattern": "Books/{objectId}:?query:",
           "name": "object",
           "target": [
             "list",

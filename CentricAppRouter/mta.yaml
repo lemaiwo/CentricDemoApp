@@ -13,7 +13,7 @@ modules:
     disk-quota: 256M
     memory: 256M
   properties:
-    SEND_XFRAMEOPTIONS: false
+    httpHeaders: "[{ \"Content-Security-Policy\": \"frame-ancestors https://*.hana.ondemand.com\" }]"
 resources:
 - name: CentricAppRouter_html_repo_runtime
   type: org.cloudfoundry.managed-service
